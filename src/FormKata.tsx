@@ -3,6 +3,9 @@ import { parse } from 'node:path';
 import React, { useEffect, useState } from 'react';
 import { ICiudad, IPescado } from './Interfaces/Interfaces';
 
+
+/**Added by Unai Elizondo */
+
 const CIUDADES:ICiudad[] = [
 {
   nombreCiudad: "MADRID",
@@ -47,6 +50,8 @@ const [cantidadPulpo, setCantidadPulpo] = useState(0)
 const [cantidadCentollo, setCantidadCentollo] = useState(0)
 const [isWithValue, setIsValue] = useState(false)
 
+//Cuando se cambian de estado las variables llame a la funcion y le pase el array
+// ya que setState es asyncrhono puede que al llamar a la funcion no tengan asignadas los valores
 useEffect(()=>{
   if(isWithValue){
     let pescados: IPescado[] = [{
@@ -75,7 +80,7 @@ useEffect(()=>{
   function obtenerMejorDestino(listaPescados:IPescado[]){
 
       let pesoTotalPescados: number = 0;
-  
+  // Sumar el peso total para saber si la furgoneta entran
       listaPescados.forEach(function(a){pesoTotalPescados += a.cantidad;});
 
       if(pesoTotalPescados<0 || pesoTotalPescados>200){
@@ -99,6 +104,7 @@ useEffect(()=>{
   
       ];
   
+      //Recorres el array de pescados y calcular los ingresos de cada ciudad
       listaPescados.forEach(pesc => {
           CIUDADES.forEach(ciudad => {
             
@@ -110,16 +116,15 @@ useEffect(()=>{
               beneficios.filter(ben => ben.nombreCiudad ===ciudad.nombreCiudad.toLowerCase())[0].beneficioTotal += ciudad.preciosPescados["centollo"]*pesc.cantidad;
             }
             
-              // beneficios.filter(ben => ben.nombreCiudad ===ciudad.nombreCiudad.toLowerCase())[0].beneficioTotal += ciudad.preciosPescados[pesc.nombrePescado.toLowerCase()]*pesc.cantidad;
           });
           
       });
   
+      // Recorres cada ciudad y calcular el beneficio descontando los gastos
       CIUDADES.forEach(ciud => {
           let distanciaKm:number = ciud.distanciaKm;
           let depreciacionPescado = 1-(distanciaKm/100)/100;
           let costeFurgo = 5 + distanciaKm*2;
-          //beneficios[ciud.ciudad.toLowerCase()] = beneficios[ciud.ciudad.toLowerCase()]*depreciacion - costeFurgo;
   
           let beneficioCiudadX:any = beneficios.filter(ben => ben.nombreCiudad ===ciud.nombreCiudad.toLowerCase())[0];
           beneficios.filter(ben => ben.nombreCiudad ===ciud.nombreCiudad.toLowerCase())[0].beneficioTotal = beneficioCiudadX.beneficioTotal*depreciacionPescado - costeFurgo;
@@ -127,6 +132,7 @@ useEffect(()=>{
   
   
   
+      //Ordenamos de mayor beneficio 
       beneficios.sort((a,b)=>{
           if(a.beneficioTotal>b.beneficioTotal){return -1}
           return a.beneficioTotal < b.beneficioTotal ?1:0;
@@ -149,23 +155,17 @@ useEffect(()=>{
 function handleSubmit(event:any){
     event.preventDefault()
 
-  
+    //cambiamos de estado las vairiables poniendo los valores del formulario
     setCantidadVieiras(parseFloat(event.target.elements.vieiras.value))
     setCantidadPulpo(parseFloat(event.target.elements.pulpos.value))
     setCantidadCentollo(parseFloat(event.target.elements.centollos.value))
 
     setIsValue(true)
     
-    
+    //Se limpia el formulario para la siguiente consulta
   event.target.elements.vieiras.value = 0
   event.target.elements.pulpos.value = 0
-  event.target.elements.centollos.value = 0
-  
-  /*
-  setVieiras(0)
-  setPulpo(0)
-  setCentollo(0)
-*/     
+  event.target.elements.centollos.value = 0 
 }
 
 
