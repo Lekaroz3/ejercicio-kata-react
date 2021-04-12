@@ -1,8 +1,5 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { FormularioKata } from './FormKata';
-import { ICiudad, IPescado } from './Interfaces/Interfaces';
 
 
 

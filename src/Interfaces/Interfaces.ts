@@ -1,5 +1,5 @@
 
-export interface ICiudad{
+export interface Ciudad{
     nombreCiudad: string,
     preciosPescados:{
         vieiras:number,
@@ -9,7 +9,7 @@ export interface ICiudad{
      distanciaKm:number
 }
 
-export interface IPescado{
+export interface Pescado{
     nombrePescado:string,
     cantidad:number
 }
